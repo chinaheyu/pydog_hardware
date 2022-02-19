@@ -37,13 +37,15 @@
 
 #include "bsp_usb.h"
 
+
 class STM32Hardware {
   public:
     STM32Hardware(){}
     
     // any initialization code necessary to use the serial port
     void init(){
-      usb_reset_rx_buf();
+        usb_reset_rx_buf();
+        usb_reset_tx_buf();
     }
 
     // read a byte from the serial port. -1 = failure
@@ -54,11 +56,14 @@ class STM32Hardware {
     // write data to the connection to ROS
     void write(uint8_t* data, int length){
       usb_interface_send(data, length);
-      usb_tx_flush();
+    }
+    
+    void flush(){
+        usb_tx_flush();
     }
 
     // returns milliseconds since start of program
-    unsigned long time(){ return HAL_GetTick();; }
+    unsigned long time(){ return HAL_GetTick(); }
 
   protected:
 };

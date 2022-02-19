@@ -20,3 +20,13 @@ unsigned long time_us(void)
 {
     return get_time_ms() * 1000 + get_time_us();
 }
+
+void configureTimerForRunTimeStats(void)
+{
+    
+}
+
+unsigned long getRunTimeCounterValue(void)
+{
+    return time_us();
+}

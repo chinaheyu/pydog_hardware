@@ -3,17 +3,11 @@
 
 
 /**
-  * @brief          闪烁绿色LED灯表示程序正常运行
+  * @brief          软件定时器，闪烁绿色LED灯表示程序正常运行
   * @param[in]      pvParameters: NULL
   * @retval         none
   */
-void led_task(void *argument)
+void led_blink(void *argument)
 {
-
-    while (1)
-    {
-        led_green_toggle();
-        
-        osDelay(200);
-    }
+    led_green_toggle();
 }

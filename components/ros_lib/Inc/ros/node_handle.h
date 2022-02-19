@@ -81,6 +81,7 @@ const uint8_t MODE_FIRST_FF = 0;
 const uint8_t MODE_PROTOCOL_VER   = 1;
 const uint8_t PROTOCOL_VER1       = 0xff; // through groovy
 const uint8_t PROTOCOL_VER2       = 0xfe; // in hydro
+const uint8_t PROTOCOL_VER5       = 0xfb; // in melodic
 const uint8_t PROTOCOL_VER        = PROTOCOL_VER2;
 const uint8_t MODE_SIZE_L         = 2;
 const uint8_t MODE_SIZE_H         = 3;

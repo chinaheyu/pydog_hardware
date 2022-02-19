@@ -15,18 +15,24 @@ extern "C" {
   * @retval         none
   */
 extern void usb_interface_send(uint8_t *data, uint16_t len);
-
+   
 /**
-  * @brief          发送数据
-  * @retval         USBD_StatusTypeDef
-  */
+  * @brief          刷新tx缓冲区，发送所有数据
+  * @retval         none
+  */    
 extern int32_t usb_tx_flush(void);
 
 /**
-  * @brief          刷新rx缓冲区
+  * @brief          重置rx缓冲区
   * @retval         none
   */
 extern void usb_reset_rx_buf(void);
+
+/**
+  * @brief          重置tx缓冲区
+  * @retval         none
+  */
+extern void usb_reset_tx_buf(void);
 
 /**
   * @brief          read a byte from the serial port. -1 = failure

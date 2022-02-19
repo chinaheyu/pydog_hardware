@@ -1,95 +1,72 @@
-#include "ros_main.h"
-
 #include "ros.h"
 #include "cmsis_os.h"
+#include "bsp_led.h"
 
-#include <hardware_config.h>
-#include <quadruped_description.h>
-#include <gait_config.h>
+#include "quadruped_control.h"
 
-#include <body_controller/body_controller.h>
-#include <leg_controller/leg_controller.h>
-#include <kinematics/kinematics.h>
-
-#include <constructors/constructors.h>
-
-champ::QuadrupedBase base(gait_config);
-champ::BodyController body_controller(base);
-champ::LegController leg_controller(base);
-champ::Kinematics kinematics(base);
 
 /**
-  * @brief          ros主函数
+  * @brief          ros主函数，注意变量尽量定义在栈上，动态内存分配使用pvPortMalloc
   * @param[in]      pvParameters: NULL
   * @retval         none
   */
-void ros_main(void *argument)
+extern "C" void ros_main(void *argument)
 {
-    champ::URDF::loadFromHeader(base);
+    ros::NodeHandle nh;
     
-    static unsigned long prev_publish_time = 0;
+    nh.initNode();
     
-    geometry::Transformation target_foot_positions[4];
-    float target_joint_positions[12]; 
+    /* 连接rosserial_python */
+    while(!nh.connected())
+    {
+        nh.spinOnce();
+        osDelay(10);
+    }
+    
+    nh.loginfo("\033[1;32mPYDOG HARDWARE CONNECTED\033[0m");
+    
+    // 构造四足控制器
+    float joint_position[12];
+    QuadrupedControl quadruped_control(nh);
+    quadruped_control.init();
+    
+    uint32_t pre_control_time = time_us();
+    uint32_t pre_publish_time = time_us();
     
     while (1)
     {
-        champ::Pose req_pose;
-        command_interface.poseInput(req_pose);
-        req_pose.position.z = req_pose.position.z * gait_config.nominal_height;
-        if(req_pose.position.z == 0.0)
+        /* 检测是否离线 */
+        if(nh.connected())
         {
-            req_pose.position.z = gait_config.nominal_height;
+            led_red_off();
         }
-        else if(req_pose.position.z < (gait_config.nominal_height * 0.5))
+        else
         {
-            req_pose.position.z = gait_config.nominal_height * 0.5;
-        }
-   
-        body_controller.poseCommand(target_foot_positions, req_pose);
-
-        champ::Velocities req_vel;
-        command_interface.velocityInput(req_vel);
-        leg_controller.velocityCommand(target_foot_positions, req_vel);
-
-        kinematics.inverse(target_joint_positions, target_foot_positions);
-
-        command_interface.jointsInput(target_joint_positions);
-        actuators.moveJoints(target_joint_positions);
-        
-        // 20ms发布一次状态
-        if ((time_us() - prev_publish_time) >= 20000)
-        {
-            prev_publish_time = time_us();
-            
-            bool foot_contacts[4];
-            float current_joint_positions[12];
-
-            for(int i = 0; i < 4; i++)
-            {
-                if(base.legs[i]->gait_phase())
-                    foot_contacts[i] = 1;
-                else
-                    foot_contacts[i] = 0;
-            }
-            status_interface.publishFootContacts(foot_contacts);
-
-            actuators.getJointPositions(current_joint_positions);
-            status_interface.publishJointStates(current_joint_positions);
+            led_red_on();
         }
         
-        command_interface.run();
+        // 控制频率100Hz
+        if(time_us() - pre_control_time > 10000)
+        {
+            pre_control_time = time_us();
+            quadruped_control.update(joint_position);
+            // TODO 发送到舵机
+        }
         
+        // 状态发布频率50Hz
+        if(time_us() - pre_publish_time > 20000)
+        {
+            pre_publish_time = time_us();
+            quadruped_control.publishRobotState();
+        }
+        
+        /* 发送所有数据 */
+        nh.getHardware()->flush();
+        
+        /* 调用回调函数 */
+        nh.spinOnce();
+        
+        /* 留给操作系统调度 */
         osDelay(2);
     }
-}
-
-void gas_sensor_callback(double raw)
-{
-    ros_interface.publishGasSensor(raw);
-}
-
-void anemometer_callback(double wind_direction, double wind_speed)
-{
-    ros_interface.publishAnemometer(wind_direction, wind_speed);
 }

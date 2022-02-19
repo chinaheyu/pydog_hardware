@@ -18,37 +18,37 @@
 #define RHU_PIN 10
 #define RHL_PIN 11
 
-#define LFH_INV false
-#define LFU_INV false
-#define LFL_INV true
+#define LFH_INV 1.0f
+#define LFU_INV 1.0f
+#define LFL_INV 1.0f
 
-#define RFH_INV false
-#define RFU_INV true
-#define RFL_INV false
+#define RFH_INV 1.0f
+#define RFU_INV 1.0f
+#define RFL_INV 1.0f
 
-#define LHH_INV false
-#define LHU_INV false
-#define LHL_INV true
+#define LHH_INV 1.0f
+#define LHU_INV 1.0f
+#define LHL_INV 1.0f
 
-#define RHH_INV false
-#define RHU_INV true
-#define RHL_INV false
+#define RHH_INV 1.0f
+#define RHU_INV 1.0f
+#define RHL_INV 1.0f
     
-#define LFH_OFFSET 0
-#define LFU_OFFSET 0
-#define LFL_OFFSET 0
+#define LFH_OFFSET 0.0f
+#define LFU_OFFSET 0.0f
+#define LFL_OFFSET 0.0f
 
-#define RFH_OFFSET 0
-#define RFU_OFFSET 0
-#define RFL_OFFSET 0
+#define RFH_OFFSET 0.0f
+#define RFU_OFFSET 0.0f
+#define RFL_OFFSET 0.0f
 
-#define LHH_OFFSET 0
-#define LHU_OFFSET 0
-#define LHL_OFFSET 0
+#define LHH_OFFSET 0.0f
+#define LHU_OFFSET 0.0f
+#define LHL_OFFSET 0.0f
 
-#define RHH_OFFSET 0
-#define RHU_OFFSET 0
-#define RHL_OFFSET 0
+#define RHH_OFFSET 0.0f
+#define RHU_OFFSET 0.0f
+#define RHL_OFFSET 0.0f
 
 
 #endif

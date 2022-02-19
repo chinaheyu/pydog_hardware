@@ -37,6 +37,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include "my_round.h"
 
 namespace ros
 {

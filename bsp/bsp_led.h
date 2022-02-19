@@ -1,7 +1,10 @@
 #ifndef BSP_LED_H
 #define BSP_LED_H
 
-
+#ifdef  __cplusplus
+extern "C" {
+#endif
+    
 /**
   * @brief          µ„¡¡LED0£®∫Ï…´£©
   * @retval         none
@@ -43,5 +46,8 @@ extern void led_green_off(void);
   */
 extern void led_green_toggle(void);
 
+#ifdef  __cplusplus
+}  
+#endif
 
 #endif

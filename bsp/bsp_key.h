@@ -1,20 +1,21 @@
 #ifndef BSP_KEY_H
 #define BSP_KEY_H
 
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
+#include "gpio.h"
+#include "cmsis_os.h"
 
 
-/**
-  * @brief          判断KEY0是否按下
-  * @retval         int
-  */
-extern int is_key0_pressed(void);
+extern osEventFlagsId_t keyPressEventHandle;
+extern int key0_callback_flag;
+extern int key_up_callback_flag;
 
 
-/**
-  * @brief          判断KEY_UP是否按下
-  * @retval         int
-  */
-extern int is_key_up_pressed(void);
-
+#ifdef  __cplusplus
+}  
+#endif
 
 #endif

@@ -23,7 +23,7 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
-extern void usb_rcv_callback(uint8_t *buf, uint32_t len);
+
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,6 +32,17 @@ extern void usb_rcv_callback(uint8_t *buf, uint32_t len);
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+#include "fifo.h"
+
+#define USB_VCP_FIFO_SIZE 4096
+
+// tx fifo
+fifo_s_t usb_tx_fifo;
+uint8_t usb_tx_fifo_buff[APP_TX_DATA_SIZE];
+
+// rx fifo
+fifo_s_t usb_rx_fifo;
+uint8_t usb_rx_fifo_buff[USB_VCP_FIFO_SIZE];
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -74,17 +85,7 @@ extern void usb_rcv_callback(uint8_t *buf, uint32_t len);
   */
 
 /* USER CODE BEGIN PRIVATE_MACRO */
-#include "fifo.h"
 
-#define USB_VCP_FIFO_SIZE 4096
-
-// tx fifo
-fifo_s_t usb_tx_fifo;
-uint8_t usb_tx_fifo_buff[APP_TX_DATA_SIZE];
-
-// rx fifo
-fifo_s_t usb_rx_fifo;
-uint8_t usb_rx_fifo_buff[USB_VCP_FIFO_SIZE];
 /* USER CODE END PRIVATE_MACRO */
 
 /**
@@ -165,11 +166,10 @@ static int8_t CDC_Init_FS(void)
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
-  
+    
   // 初始化fifo
   fifo_s_init(&usb_tx_fifo, usb_tx_fifo_buff, APP_TX_DATA_SIZE);
   fifo_s_init(&usb_rx_fifo, usb_rx_fifo_buff, USB_VCP_FIFO_SIZE);
-  
   return (USBD_OK);
   /* USER CODE END 3 */
 }
@@ -279,7 +279,7 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   
   // 把接收到的数据放入接收fifo
   fifo_s_puts_noprotect(&usb_rx_fifo, (char *)Buf, *Len);
-  
+    
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);
@@ -301,16 +301,12 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 {
   uint8_t result = USBD_OK;
   /* USER CODE BEGIN 7 */
-
-  // 放入tx缓冲区，通过调用usb_tx_flush函数统一发送
-  fifo_s_puts(&usb_tx_fifo, (char *)Buf, Len);
-
-//  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
-//  if (hcdc->TxState != 0){
-//    return USBD_BUSY;
-//  }
-//  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
-//  result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
+  if (hcdc->TxState != 0){
+    return USBD_BUSY;
+  }
+  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
+  result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
   /* USER CODE END 7 */
   return result;
 }
@@ -339,36 +335,6 @@ static int8_t CDC_TransmitCplt_FS(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
-
-/**
-  * @brief          发送数据
-  * @retval         USBD_StatusTypeDef
-  */
-int32_t usb_tx_flush()
-{
-    var_cpu_sr();
-
-    uint8_t result = USBD_OK;
-    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
-
-    if (hcdc->TxState != 0)
-    {
-        return USBD_BUSY;
-    }
-    else
-    {
-        uint32_t send_num;
-
-        enter_critical();
-        send_num = usb_tx_fifo.used_num;
-        fifo_s_gets_noprotect(&usb_tx_fifo, (char *)UserTxBufferFS, send_num);
-        exit_critical();
-
-        USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, send_num);
-        result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
-        return result;
-    }
-}
 
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
