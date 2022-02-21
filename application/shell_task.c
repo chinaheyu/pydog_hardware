@@ -168,6 +168,9 @@ void shell_task(void *argument)
     // 初始化fifo
     fifo_s_init(&shell_fifo, shell_buf, CMD_BUFSIZE);
     
+    // 初始化串口
+    usart1_manage_init();
+    
     // 注册回调函数
     usart1_rx_callback_register(usart1_rx_callback);
     

@@ -1,0 +1,14 @@
+pydog_hardware\control_task.o: ..\application\control_task.c
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+pydog_hardware\control_task.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+pydog_hardware\control_task.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+pydog_hardware\control_task.o: ../Core/Inc/FreeRTOSConfig.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+pydog_hardware\control_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

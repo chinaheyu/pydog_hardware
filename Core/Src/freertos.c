@@ -85,6 +85,27 @@ const osThreadAttr_t rosTask_attributes = {
   .stack_size = 2048 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for controlTask */
+osThreadId_t controlTaskHandle;
+const osThreadAttr_t controlTask_attributes = {
+  .name = "controlTask",
+  .stack_size = 2048 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for sensorsTask */
+osThreadId_t sensorsTaskHandle;
+const osThreadAttr_t sensorsTask_attributes = {
+  .name = "sensorsTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for oledTask */
+osThreadId_t oledTaskHandle;
+const osThreadAttr_t oledTask_attributes = {
+  .name = "oledTask",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 /* Definitions for ledTimer */
 osTimerId_t ledTimerHandle;
 const osTimerAttr_t ledTimer_attributes = {
@@ -111,6 +132,9 @@ extern void shell_task(void *argument);
 extern void key0_task(void *argument);
 extern void key_up_task(void *argument);
 extern void ros_task(void *argument);
+extern void control_task(void *argument);
+extern void sensors_task(void *argument);
+extern void oled_task(void *argument);
 extern void led_blink(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -234,6 +258,15 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of rosTask */
   rosTaskHandle = osThreadNew(ros_task, NULL, &rosTask_attributes);
+
+  /* creation of controlTask */
+  controlTaskHandle = osThreadNew(control_task, NULL, &controlTask_attributes);
+
+  /* creation of sensorsTask */
+  sensorsTaskHandle = osThreadNew(sensors_task, NULL, &sensorsTask_attributes);
+
+  /* creation of oledTask */
+  oledTaskHandle = osThreadNew(oled_task, NULL, &oledTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

@@ -1,14 +1,17 @@
 #include "bsp_usart.h"
 #include <stdarg.h>
+#include "cmsis_os.h"
 
 extern UART_HandleTypeDef huart1;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
-static uint8_t usart1_rx_buff[USART1_RX_BUFFER_SIZE];
-static uint8_t usart1_tx_buff[USART1_TX_BUFFER_SIZE];
-static uint8_t usart1_tx_fifo_buff[USART1_TX_FIFO_SIZE];
+
+extern UART_HandleTypeDef huart2;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
 
 usart_manage_obj_t usart1_manage_obj = {0};
+usart_manage_obj_t usart2_manage_obj = {0};
 
 static void usart_rec_to_buff(usart_manage_obj_t *m_obj, interrput_type int_type);
 static void usart_transmit_hook(usart_manage_obj_t *m_obj);
@@ -43,8 +46,21 @@ void usart1_idle_callback(void)
     }
 }
 
+void usart2_idle_callback(void)
+{
+    if (__HAL_UART_GET_FLAG(&huart2, UART_FLAG_IDLE))
+    {
+        __HAL_UART_CLEAR_IDLEFLAG(&huart2);
+        usart_rec_to_buff(&usart2_manage_obj, INTERRUPT_TYPE_UART);
+    }
+}
+
 void usart1_manage_init(void)
 {
+    uint8_t *usart1_rx_buff = pvPortMalloc(USART1_RX_BUFFER_SIZE);
+    uint8_t *usart1_tx_fifo_buff = pvPortMalloc(USART1_TX_FIFO_SIZE);
+    uint8_t *usart1_tx_buff = pvPortMalloc(USART1_TX_BUFFER_SIZE);
+    
     usart1_manage_obj.rx_buffer = usart1_rx_buff;
     usart1_manage_obj.rx_buffer_size = USART1_RX_BUFFER_SIZE;
     usart1_manage_obj.dma_h = &hdma_usart1_rx;
@@ -59,6 +75,28 @@ void usart1_manage_init(void)
 
     HAL_UART_Receive_DMA(&huart1, usart1_rx_buff, USART1_RX_BUFFER_SIZE);
     __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+}
+
+void usart2_manage_init(void)
+{
+    uint8_t *usart2_rx_buff = pvPortMalloc(USART2_RX_BUFFER_SIZE);
+    uint8_t *usart2_tx_fifo_buff = pvPortMalloc(USART2_TX_FIFO_SIZE);
+    uint8_t *usart2_tx_buff = pvPortMalloc(USART2_TX_BUFFER_SIZE);
+    
+    usart2_manage_obj.rx_buffer = usart2_rx_buff;
+    usart2_manage_obj.rx_buffer_size = USART2_RX_BUFFER_SIZE;
+    usart2_manage_obj.dma_h = &hdma_usart2_rx;
+    usart2_manage_obj.uart_h = &huart2;
+    usart2_manage_obj.tx_fifo_buffer = usart2_tx_fifo_buff;
+    usart2_manage_obj.tx_fifo_size = USART2_TX_FIFO_SIZE;
+    usart2_manage_obj.tx_buffer_size = USART2_TX_BUFFER_SIZE;
+    usart2_manage_obj.tx_buffer = usart2_tx_buff;
+    usart2_manage_obj.is_sending = 0;
+
+    fifo_s_init(&(usart2_manage_obj.tx_fifo), usart2_tx_fifo_buff, USART2_TX_FIFO_SIZE);
+
+    HAL_UART_Receive_DMA(&huart2, usart2_rx_buff, USART2_RX_BUFFER_SIZE);
+    __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);
 }
 
 int usart1_printf(char *fmt, ...)
@@ -87,9 +125,20 @@ void usart1_transmit(uint8_t *buff, uint16_t len)
     usart_transmit(&usart1_manage_obj, buff, len);
 }
 
+void usart2_transmit(uint8_t *buff, uint16_t len)
+{
+    usart_transmit(&usart2_manage_obj, buff, len);
+}
+
 void usart1_rx_callback_register(usart_call_back fun)
 {
     usart_rx_callback_register(&usart1_manage_obj, fun);
+    return;
+}
+
+void usart2_rx_callback_register(usart_call_back fun)
+{
+    usart_rx_callback_register(&usart2_manage_obj, fun);
     return;
 }
 
@@ -116,6 +165,11 @@ void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
     {
         usart_rec_to_buff(&usart1_manage_obj, INTERRUPT_TYPE_DMA_HALF);
     }
+    
+    if (huart == &huart2)
+    {
+        usart_rec_to_buff(&usart2_manage_obj, INTERRUPT_TYPE_DMA_HALF);
+    }
 
     return;
 }
@@ -131,6 +185,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         usart_rec_to_buff(&usart1_manage_obj, INTERRUPT_TYPE_DMA_ALL);
     }
+    
+    if (huart == &huart2)
+    {
+        usart_rec_to_buff(&usart2_manage_obj, INTERRUPT_TYPE_DMA_ALL);
+    }
 
     return;
 }
@@ -145,6 +204,11 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
     if (huart == &huart1)
     {
         usart_transmit_hook(&usart1_manage_obj);
+    }
+    
+    if (huart == &huart2)
+    {
+        usart_transmit_hook(&usart2_manage_obj);
     }
 
     return;

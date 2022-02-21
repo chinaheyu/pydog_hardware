@@ -19,6 +19,8 @@
 #include "read_uid.h"
 #include "fatfs.h"
 
+#include "ssd1306_tests.h"
+
 
 extern void fsResultVarToString(FRESULT r, char* out);
 
@@ -31,6 +33,7 @@ static BaseType_t prvFlashReadPageCommand( char *pcWriteBuffer, size_t xWriteBuf
 static BaseType_t prvWriteFileToFlashCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 static BaseType_t prvHeapDetailCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 static BaseType_t prvMeasureTempCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
+static BaseType_t prvTestOledCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 
 
 static const CLI_Command_Definition_t xReadUID =
@@ -97,6 +100,14 @@ static const CLI_Command_Definition_t xMeasureTemp =
 	0 /* No parameters are expected. */
 };
 
+static const CLI_Command_Definition_t xTestOled =
+{
+	"test-oled", /* The command string to type. */
+	"\r\ntest-oled:\r\n Test the external oled screen. \r\n",
+	prvTestOledCommand, /* The function to run. */
+	0 /* No parameters are expected. */
+};
+
 static BaseType_t prvReadUIDCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
 {
     /* Remove compile time warnings about unused parameters, and check the
@@ -115,9 +126,9 @@ static BaseType_t prvReadUIDCommand( char *pcWriteBuffer, size_t xWriteBufferLen
     
     for(i = 0; i < UNIQUE_ID_BYTE_SIZE - 1; ++i)
     {
-        len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02x-", buf[i]);
+        len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02X-", buf[i]);
     }
-    len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02x\r\n", buf[i]);
+    len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02X\r\n", buf[i]);
     
     vPortFree(buf);
 
@@ -278,18 +289,18 @@ static BaseType_t prvFlashReadPageCommand( char *pcWriteBuffer, size_t xWriteBuf
         uint8_t* buf = pvPortMalloc(16 * sizeof(uint8_t));
         W25qxx_ReadBytes(buf, page_idx * w25qxx.PageSize + current_address, 16);
         
-        len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "0x%08x: ", page_idx * w25qxx.PageSize + current_address);
+        len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "0x%08X: ", page_idx * w25qxx.PageSize + current_address);
         
         for(i = 0; i < 8; ++i)
         {
-            len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02x ", buf[i]);
+            len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02X ", buf[i]);
         }
         
         len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "- ");
         
         for(i = 8; i < 16; ++i)
         {
-            len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02x ", buf[i]);
+            len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, "%02X ", buf[i]);
         }
         
         len += snprintf(pcWriteBuffer + len, xWriteBufferLen - len, " | ");
@@ -366,7 +377,7 @@ static BaseType_t prvWriteFileToFlashCommand( char *pcWriteBuffer, size_t xWrite
         retSD = f_read(fp, buf, file_size, &written_size);
         W25qxx_WriteAnyBytes(addr, written_size, buf);
         
-        snprintf(pcWriteBuffer, xWriteBufferLen, "Flash Finished.\r\nTotal file size: %d bytes. Successfully written size: %d bytes\r\nYou can check the result at page %d address 0x%08x\r\n", file_size, written_size, addr / w25qxx.PageSize, addr);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "Flash Finished.\r\nTotal file size: %d bytes. Successfully written size: %d bytes\r\nYou can check the result at page %d address 0x%08X\r\n", file_size, written_size, addr / w25qxx.PageSize, addr);
 
         vPortFree(buf);
     }
@@ -439,6 +450,24 @@ static BaseType_t prvMeasureTempCommand( char *pcWriteBuffer, size_t xWriteBuffe
 	return pdFALSE;
 }
 
+static BaseType_t prvTestOledCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
+{
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+	( void ) pcCommandString;
+	( void ) xWriteBufferLen;
+	configASSERT( pcWriteBuffer );
+    
+    ssd1306_TestAll();
+
+    sprintf(pcWriteBuffer, "Test finished\r\n");
+
+	/* There is no more data to return after this single string, so return
+	pdFALSE. */
+	return pdFALSE;
+}
+
 void register_shell_commands(void)
 {
     FreeRTOS_CLIRegisterCommand( &xReadUID );
@@ -449,5 +478,6 @@ void register_shell_commands(void)
     FreeRTOS_CLIRegisterCommand( &xWriteFileToFlash );
     FreeRTOS_CLIRegisterCommand( &xHeapDetail );
     FreeRTOS_CLIRegisterCommand( &xMeasureTemp );
+    FreeRTOS_CLIRegisterCommand( &xTestOled );
     
 }

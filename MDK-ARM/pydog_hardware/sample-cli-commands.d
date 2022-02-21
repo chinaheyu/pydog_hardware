@@ -1,0 +1,16 @@
+pydog_hardware\sample-cli-commands.o: ..\components\cli\Sample-CLI-commands.c
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+pydog_hardware\sample-cli-commands.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+pydog_hardware\sample-cli-commands.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+pydog_hardware\sample-cli-commands.o: ../Core/Inc/FreeRTOSConfig.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+pydog_hardware\sample-cli-commands.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+pydog_hardware\sample-cli-commands.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+pydog_hardware\sample-cli-commands.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+pydog_hardware\sample-cli-commands.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+pydog_hardware\sample-cli-commands.o: ..\components\cli\FreeRTOS_CLI.h

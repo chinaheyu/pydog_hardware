@@ -1,0 +1,150 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.33.0.0
+Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: yu he, wust, LIC=WHYH9-4C5WK-KPTZY-ITD4Z-D5AID-L8TKY
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.33.0.0
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.33.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      CMSIS_AGDI.dll V1.32.12.0
+Dialog DLL:      TCM.DLL V1.48.0.0
+ 
+<h2>Project:</h2>
+C:\Users\heyu\Desktop\pydog_hardware\MDK-ARM\pydog_hardware.uvprojx
+Project File Date:  02/21/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'pydog_hardware'
+Note: source file '..\application\ros_task.c' - object file renamed from 'pydog_hardware\ros_task.o' to 'pydog_hardware\ros_task_1.o'.
+compiling pca9685.c...
+compiling control_task_main.cpp...
+..\components\ros_lib\Inc\std_msgs/Time.h(56): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "std_msgs/Time"; };
+..\components\ros_lib\Inc\std_msgs/Time.h(57): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "cd7166c74c552c311fbcc2fe5a7bc289"; };
+..\components\ros_lib\Inc\rosserial_msgs/TopicInfo.h(124): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "rosserial_msgs/TopicInfo"; };
+..\components\ros_lib\Inc\rosserial_msgs/TopicInfo.h(125): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "0ad51f88fc44892f8c10684077646005"; };
+..\components\ros_lib\Inc\rosserial_msgs/Log.h(61): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "rosserial_msgs/Log"; };
+..\components\ros_lib\Inc\rosserial_msgs/Log.h(62): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "11abd731c25933261cd6183bd12d6295"; };
+..\components\ros_lib\Inc\rosserial_msgs/RequestParam.h(50): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return REQUESTPARAM; };
+..\components\ros_lib\Inc\rosserial_msgs/RequestParam.h(51): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "c1f3d28f1b044c871e6eff2e9fc3c667"; };
+..\components\ros_lib\Inc\rosserial_msgs/RequestParam.h(200): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return REQUESTPARAM; };
+..\components\ros_lib\Inc\rosserial_msgs/RequestParam.h(201): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "9f0e98bda65981986ddf53afa7a40e49"; };
+..\quadruped\gait_config.h(16): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\quadruped_base/quadruped_components.h(206): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\quadruped_base/quadruped_joint.h(103): warning:  #815-D: type qualifier on return type is meaningless
+              const float x() const
+..\quadruped\quadruped_base/quadruped_joint.h(108): warning:  #815-D: type qualifier on return type is meaningless
+              const float y() const
+..\quadruped\quadruped_base/quadruped_joint.h(113): warning:  #815-D: type qualifier on return type is meaningless
+              const float z() const
+..\quadruped\quadruped_base/quadruped_joint.h(118): warning:  #815-D: type qualifier on return type is meaningless
+              const float roll() const
+..\quadruped\quadruped_base/quadruped_joint.h(123): warning:  #815-D: type qualifier on return type is meaningless
+              const float pitch() const
+..\quadruped\quadruped_base/quadruped_joint.h(128): warning:  #815-D: type qualifier on return type is meaningless
+              const float yaw() const
+..\quadruped\quadruped_base/quadruped_joint.h(164): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\quadruped_base/quadruped_base.h(143): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\macros/macros.h(43): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\kinematics/kinematics.h(179): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\body_controller/body_controller.h(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  float max_translation_z = -leg.zero_stance().Z() * 0.65;
+..\quadruped\body_controller/body_controller.h(70): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  if(req_translation_z < 0.0)
+..\quadruped\leg_controller/trajectory_planner.h(164): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\leg_controller/phase_generator.h(118): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  if(!has_swung_ && stance_phase_signal[0] < 0.5)
+..\quadruped\leg_controller/phase_generator.h(138): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\quadruped\leg_controller/leg_controller.h(142): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\components\ros_lib\Inc\champ_msgs/Pose.h(176): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "champ_msgs/Pose"; };
+..\components\ros_lib\Inc\champ_msgs/Pose.h(177): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "3d5697f0c9e8859325238b57521f8f4e"; };
+..\components\ros_lib\Inc\geometry_msgs/Vector3.h(128): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "geometry_msgs/Vector3"; };
+..\components\ros_lib\Inc\geometry_msgs/Vector3.h(129): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "4a842b65f413084dc2b10fb484ea7f17"; };
+..\components\ros_lib\Inc\geometry_msgs/Twist.h(43): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "geometry_msgs/Twist"; };
+..\components\ros_lib\Inc\geometry_msgs/Twist.h(44): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "9f195f881246fdfa2798d1d3eebca84a"; };
+..\components\ros_lib\Inc\champ_msgs/Contacts.h(70): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "champ_msgs/Contacts"; };
+..\components\ros_lib\Inc\champ_msgs/Contacts.h(71): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "3470d51bc28d5527f9ed97eb122d52f4"; };
+..\components\ros_lib\Inc\champ_msgs/Joints.h(76): warning:  #1300-D: getType inherits implicit virtual
+      const char * getType(){ return "champ_msgs/Joints"; };
+..\components\ros_lib\Inc\champ_msgs/Joints.h(77): warning:  #1300-D: getMD5 inherits implicit virtual
+      const char * getMD5(){ return "8ec164ae840396df197eeb512c1b8515"; };
+..\quadruped\quadruped_interface.h(22): warning:  #1299-D: members and base-classes will be initialized in declaration order, not in member initialisation list order
+                              nh(&_nh)
+..\quadruped\hardware_config.h(54): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\control_task_main.cpp(61): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              req_pose.orientation.roll = (float)(!(PS2_KEY & PSB_L2)) * ((float)PS2_RX - 128.0f) / 255.0f * 0.349066;
+..\application\control_task_main.cpp(62): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              req_pose.orientation.pitch = (127.0f - (float)PS2_RY) / 255.0f * 0.174533;
+..\application\control_task_main.cpp(63): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              req_pose.orientation.yaw = (float)(PS2_KEY & PSB_L2) * ((float)PS2_RX - 128.0f) / 255.0f * 0.436332;
+..\application\control_task_main.cpp: 43 warnings, 0 errors
+linking...
+Program Size: Code=131588 RO-data=8224 RW-data=912 ZI-data=51368  
+FromELF: creating hex file...
+"pydog_hardware\pydog_hardware.axf" - 0 Error(s), 43 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.15.0.pack
+                Keil.STM32F4xx_DFP.2.15.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_pydog_hardware
+  D:\Keil_v5\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  D:\Keil_v5\Arm\Packs\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>

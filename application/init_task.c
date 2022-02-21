@@ -8,10 +8,6 @@
 // 在main函数中，内核启动前的初始化代码
 void init_task_before_kernel_start(void)
 {
-    kernel_log("Initializing usart1.\r\n");
-    usart1_manage_init();
-    kernel_log("Initialize usart1 success.\r\n");
-    
     kernel_log("Initializing USB device.\r\n");
     MX_USB_DEVICE_Init();
     kernel_log("Initialize USB device success.\r\n");
