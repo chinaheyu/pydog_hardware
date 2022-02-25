@@ -4,6 +4,7 @@
 int key0_callback_flag;
 int key_up_callback_flag;
 
+extern void ads_finish_conversion_callback(void);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {

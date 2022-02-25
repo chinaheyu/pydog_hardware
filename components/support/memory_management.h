@@ -5,8 +5,9 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
     
-    
+uint32_t get_total_heap_size(void);
     
 #ifdef  __cplusplus
 }  

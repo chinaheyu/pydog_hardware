@@ -20,6 +20,10 @@ extern "C" {
 #define USART2_TX_BUFFER_SIZE (128)
 #define USART2_TX_FIFO_SIZE (512)
 
+#define USART3_RX_BUFFER_SIZE (128)
+#define USART3_TX_BUFFER_SIZE (128)
+#define USART3_TX_FIFO_SIZE (512)
+
 #define USART1_PRINTF_BUFF_SIZE (128)
 
 typedef uint32_t (*usart_call_back)(uint8_t *buf, uint16_t len);
@@ -60,6 +64,11 @@ void usart2_manage_init(void);
 void usart2_transmit(uint8_t *buff, uint16_t len);
 void usart2_idle_callback(void);
 void usart2_rx_callback_register(usart_call_back fun);
+
+void usart3_manage_init(void);
+void usart3_transmit(uint8_t *buff, uint16_t len);
+void usart3_idle_callback(void);
+void usart3_rx_callback_register(usart_call_back fun);
 
 void debug_raw_printf(char *fmt, ...);
 

@@ -19,7 +19,7 @@
 #include "read_uid.h"
 #include "fatfs.h"
 
-#include "ssd1306_tests.h"
+#include "i2cdetect.h"
 
 
 extern void fsResultVarToString(FRESULT r, char* out);
@@ -33,7 +33,7 @@ static BaseType_t prvFlashReadPageCommand( char *pcWriteBuffer, size_t xWriteBuf
 static BaseType_t prvWriteFileToFlashCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 static BaseType_t prvHeapDetailCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 static BaseType_t prvMeasureTempCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
-static BaseType_t prvTestOledCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
+static BaseType_t prvI2CDetectCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 
 
 static const CLI_Command_Definition_t xReadUID =
@@ -100,13 +100,14 @@ static const CLI_Command_Definition_t xMeasureTemp =
 	0 /* No parameters are expected. */
 };
 
-static const CLI_Command_Definition_t xTestOled =
+static const CLI_Command_Definition_t xI2CDetect =
 {
-	"test-oled", /* The command string to type. */
-	"\r\ntest-oled:\r\n Test the external oled screen. \r\n",
-	prvTestOledCommand, /* The function to run. */
+	"i2c-detect", /* The command string to type. */
+	"\r\ni2c-detect:\r\n Detect all devive connected through i2c bus.\r\n",
+	prvI2CDetectCommand, /* The function to run. */
 	0 /* No parameters are expected. */
 };
+
 
 static BaseType_t prvReadUIDCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
 {
@@ -450,18 +451,16 @@ static BaseType_t prvMeasureTempCommand( char *pcWriteBuffer, size_t xWriteBuffe
 	return pdFALSE;
 }
 
-static BaseType_t prvTestOledCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
+static BaseType_t prvI2CDetectCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
 {
-    /* Remove compile time warnings about unused parameters, and check the
+	/* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
 	( void ) pcCommandString;
 	( void ) xWriteBufferLen;
 	configASSERT( pcWriteBuffer );
     
-    ssd1306_TestAll();
-
-    sprintf(pcWriteBuffer, "Test finished\r\n");
+    i2cdetect(&hi2c1, pcWriteBuffer);
 
 	/* There is no more data to return after this single string, so return
 	pdFALSE. */
@@ -478,6 +477,6 @@ void register_shell_commands(void)
     FreeRTOS_CLIRegisterCommand( &xWriteFileToFlash );
     FreeRTOS_CLIRegisterCommand( &xHeapDetail );
     FreeRTOS_CLIRegisterCommand( &xMeasureTemp );
-    FreeRTOS_CLIRegisterCommand( &xTestOled );
+    FreeRTOS_CLIRegisterCommand( &xI2CDetect );
     
 }

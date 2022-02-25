@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,ARM_MATH_CM4,__FPU_USED=1U,__FPU_PRESENT=1U,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;              ../USB_DEVICE/App;              ../USB_DEVICE/Target;              ../Drivers/STM32F4xx_HAL_Driver/Inc;              ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;              ../Middlewares/Third_Party/FreeRTOS/Source/include;              ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;              ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;              ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;              ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;              ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;              ../Drivers/CMSIS/Include;              ..\application;              ..\components\support;              ..\components\cli;              ..\bsp;              ..\components\ros_lib\Inc;              ..\components\drivers;              ../FATFS/Target;              ../FATFS/App;              ../Middlewares/Third_Party/FatFs/src;              ..\components\log;              ..\quadruped</IncludePath>
+              <IncludePath>../Core/Inc;                        ../USB_DEVICE/App;                        ../USB_DEVICE/Target;                        ../Drivers/STM32F4xx_HAL_Driver/Inc;                        ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                        ../Middlewares/Third_Party/FreeRTOS/Source/include;                        ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;                        ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;                        ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                        ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;                        ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                        ../Drivers/CMSIS/Include;                        ..\application;                        ..\components\support;                        ..\components\cli;                        ..\bsp;                        ..\components\ros_lib\Inc;                        ..\components\drivers;                        ../FATFS/Target;                        ../FATFS/App;                        ../Middlewares/Third_Party/FatFs/src;                        ..\components\log;                        ..\quadruped</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2125,14 +2125,19 @@
               <FilePath>..\application\control_task.c</FilePath>
             </File>
             <File>
-              <FileName>sensors_task.c</FileName>
+              <FileName>gas_sensor_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\application\sensors_task.c</FilePath>
+              <FilePath>..\application\gas_sensor_task.c</FilePath>
             </File>
             <File>
-              <FileName>oled_task.c</FileName>
+              <FileName>ps2_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\application\oled_task.c</FilePath>
+              <FilePath>..\application\ps2_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>anemometer_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\application\anemometer_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2209,6 +2214,11 @@
               <FileType>1</FileType>
               <FilePath>..\components\support\read_uid.c</FilePath>
             </File>
+            <File>
+              <FileName>i2cdetect.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\support\i2cdetect.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2260,29 +2270,19 @@
               <FilePath>..\components\drivers\w25qxx.c</FilePath>
             </File>
             <File>
-              <FileName>pca9685.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\drivers\pca9685.c</FilePath>
-            </File>
-            <File>
-              <FileName>ssd1306.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\drivers\ssd1306.c</FilePath>
-            </File>
-            <File>
-              <FileName>ssd1306_fonts.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\drivers\ssd1306_fonts.c</FilePath>
-            </File>
-            <File>
-              <FileName>ssd1306_tests.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\drivers\ssd1306_tests.c</FilePath>
-            </File>
-            <File>
               <FileName>pstwo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\components\drivers\pstwo.c</FilePath>
+            </File>
+            <File>
+              <FileName>maestro.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\drivers\maestro.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADS1115.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\drivers\ADS1115.c</FilePath>
             </File>
           </Files>
         </Group>

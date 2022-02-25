@@ -2,19 +2,6 @@
 #include "stm32f4xx.h"
 #include "cmsis_os.h"
 
-
-// 将外部SRAM用作FreeRTOS的堆
-#define EXT_SRAM_START_ADDRESS ( ( uint8_t * ) 0x68000000 )
-#define EXT_SRAM_SIZE ( 1024 * 1024 )
-uint8_t ucHeap[configTOTAL_HEAP_SIZE];
-
-HeapRegion_t xHeapRegions[] = {
-  { ucHeap,                 configTOTAL_HEAP_SIZE },
-  { EXT_SRAM_START_ADDRESS, EXT_SRAM_SIZE         },
-  { NULL,                   0                     }
-};
-
-
 //在指定地址(WriteAddr+Bank1_SRAM3_ADDR)开始,连续清0
 //WriteAddr:要写入的地址
 //n:要写入的字节数
